@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMOBI - Imóveis</title>
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap");
+
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --roxo-escuro: #20113e;
+      --roxo: #35166a;
+      --roxo-claro: #612ca4;
+      --lilas: #a99bc9;
+      --fundo: #f8f8f9;
+      --texto: #333238;
+      --texto-roxo: #421779;
+      --borda: #e5e3e8;
+    }
+
+    body {
+      margin: 0;
+      background: var(--fundo);
+      color: var(--texto);
+      font-family: "DM Sans", Arial, sans-serif;
+    }
+
+    /* BARRA SUPERIOR */
+    .topo {
+      height: 114px;
+      background: var(--roxo-escuro);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px 0 18px;
+    }
+
+    .logo {
+      height: 90px;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      width: 160px;
+      max-height: 85px;
+      object-fit: contain;
+    }
+
+    .perfil {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 20px;
+    }
+
+    .perfil small {
+      font-size: 15px;
+    }
+
+    .avatar {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: var(--lilas);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar::before {
+      content: "";
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      background: var(--roxo-escuro);
+      border-radius: 50%;
+      left: 18px;
+      top: 9px;
+    }
+
+    .avatar::after {
+      content: "";
+      position: absolute;
+      width: 54px;
+      height: 35px;
+      background: var(--roxo-escuro);
+      border-radius: 40px 40px 0 0;
+      left: 4px;
+      top: 37px;
+    }
+
+    /* ESTRUTURA */
+    .layout {
+      display: grid;
+      grid-template-columns: 230px minmax(0, 1fr);
+      min-height: calc(100vh - 114px);
+    }
+
+    /* MENU LATERAL */
+    .menu {
+      padding: 16px 6px 20px;
+      border-right: 1px solid var(--borda);
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .item-menu {
+      height: 62px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 8px;
+      margin-bottom: 6px;
+      border-radius: 6px;
+      color: #39383d;
+      text-decoration: none;
+      font-size: 16px;
+      white-space: nowrap;
+    }
+
+    .item-menu:hover {
+      background: #f0ebf8;
+    }
+
+    .item-menu.ativo {
+      background: #ece2ff;
+      color: #4d1a9c;
+      font-weight: 700;
+    }
+
+    .item-menu img {
+      width: 60px !important;
+      height: 60px !important;
+      flex: 0 0 32px;
+      object-fit: contain;
+    }
+
+    .menu-espaco {
+      margin-top: auto;
+    }
+
+    /* CONTEÚDO */
+    .conteudo {
+      width: 100%;
+      padding: 18px 14px 30px;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    /* CABEÇALHO */
+    .cabecalho-imoveis {
+      width: 100%;
+      height: 123px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      padding: 22px 50px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(39, 12, 82, 0.96) 0%,
+          rgba(64, 24, 119, 0.82) 48%,
+          rgba(64, 24, 119, 0.38) 100%
+        ),
+        url("https://www.salles.imb.br/admin/fotos_destaque/13232908_1604013343248088_6302168264450648482_n.jpg");
+      background-size: cover;
+      background-position: center 55%;
+    }
+
+    .cabecalho-imoveis h1 {
+      margin: 0;
+      font-size: 38px;
+      font-weight: 800;
+    }
+
+    .cabecalho-imoveis p {
+      margin: 8px 0 0;
+      font-size: 17px;
+    }
+
+    /* BUSCA */
+    .barra-ferramentas {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      width: 100%;
+    }
+
+    .campo-busca {
+      height: 53px;
+      flex: 1;
+      min-width: 220px;
+      background: white;
+      border: 1px solid #e4dff0;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      padding: 0 18px;
+      box-shadow: 0 3px 12px rgba(48, 21, 88, 0.06);
+    }
+
+    .icone-busca {
+      width: 25px;
+      height: 25px;
+      border: 3px solid var(--roxo);
+      border-radius: 50%;
+      position: relative;
+      margin-right: 14px;
+      flex-shrink: 0;
+    }
+
+    .icone-busca::after {
+      content: "";
+      width: 10px;
+      height: 3px;
+      background: var(--roxo);
+      position: absolute;
+      right: -8px;
+      bottom: -4px;
+      transform: rotate(45deg);
+      border-radius: 5px;
+    }
+
+    .campo-busca input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-family: "DM Sans", Arial, sans-serif;
+      font-size: 16px;
+    }
+
+    .filtros {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: nowrap;
+    }
+
+    .filtro {
+      height: 49px;
+      padding: 0 19px;
+      border: none;
+      border-radius: 25px;
+      background: #eee7fa;
+      color: #35166a;
+      font-family: "DM Sans", Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .filtro.ativo {
+      background: var(--roxo);
+      color: white;
+    }
+
+    /* BOTÃO */
+    .botao-cadastrar {
+      height: 52px;
+      border: none;
+      border-radius: 13px;
+      padding: 0 24px;
+      background: #5816aa;
+      color: white;
+      font-family: "DM Sans", Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .mais {
+      font-size: 28px;
+      font-weight: 300;
+      line-height: 0;
+    }
+
+    /* TÍTULO */
+    .titulo-secao {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 14px;
+    }
+
+    .titulo-secao h2 {
+      margin: 0;
+      color: var(--texto-roxo);
+      font-size: 22px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .icone-casa {
+      width: 29px;
+      height: 29px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .icone-casa::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 16px;
+      background: var(--roxo-claro);
+      left: 5px;
+      top: 9px;
+      border-radius: 2px;
+    }
+
+    .icone-casa::after {
+      content: "";
+      position: absolute;
+      width: 17px;
+      height: 17px;
+      background: var(--roxo-claro);
+      left: 6px;
+      top: 3px;
+      transform: rotate(45deg);
+      border-radius: 3px;
+    }
+
+    .linha-titulo {
+      height: 2px;
+      background: #ddd1ee;
+      flex: 1;
+    }
+
+    .ver-todos {
+      color: #612ca4;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    /* CARDS */
+    .imoveis-destaque {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+
+    .card-imovel {
+      background: white;
+      border: 1px solid #e5e1ec;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 13px rgba(51, 24, 88, 0.08);
+      min-width: 0;
+    }
+
+    .foto-imovel {
+      height: 190px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      background: #ddd;
+    }
+
+    .foto-imovel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .status {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      height: 31px;
+      padding: 0 13px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      background: #63369e;
+    }
+
+    .status-ponto {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #42c768;
+    }
+
+    .status-alugado .status-ponto {
+      background: #2995ef;
+    }
+
+    .status-negociacao .status-ponto {
+      background: #f6a21a;
+    }
+
+    .status-vendido .status-ponto {
+      background: #7937d5;
+    }
+
+    /* INFORMAÇÕES */
+    .informacoes-imovel {
+      padding: 12px 14px 13px;
+    }
+
+    .informacoes-imovel h3 {
+      margin: 0 0 7px;
+      color: #25124c;
+      font-size: 17px;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .endereco {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #6c5793;
+      font-size: 13px;
+      margin-bottom: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .icone-localizacao {
+      width: 13px;
+      height: 17px;
+      border: 2px solid #7040b5;
+      border-radius: 9px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .icone-localizacao::after {
+      content: "";
+      width: 4px;
+      height: 4px;
+      border: 1px solid #7040b5;
+      border-radius: 50%;
+      position: absolute;
+      left: 2.5px;
+      top: 3px;
+    }
+
+    .rodape-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 7px;
+    }
+
+    .tipo-valor {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .tipo-imovel {
+      color: #5c4385;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .separador {
+      width: 1px;
+      height: 20px;
+      background: #cfc4df;
+      margin: 0 9px;
+    }
+
+    .valor-imovel {
+      color: #27104e;
+      font-size: 14px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .botao-detalhes {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: #eee3ff;
+      color: #612ca4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* LISTA */
+    .lista-container {
+      width: 100%;
+      background: white;
+      border: 1px solid var(--borda);
+      border-radius: 15px;
+      padding: 17px 14px 15px;
+      box-shadow: 0 3px 12px rgba(51, 24, 88, 0.05);
+      overflow: hidden;
+    }
+
+    .titulo-lista {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 14px 8px;
+    }
+
+    .titulo-lista h2 {
+      margin: 0;
+      color: var(--texto-roxo);
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .icone-lista {
+      color: #612ca4;
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .tabela-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .tabela {
+      width: 100%;
+      min-width: 900px;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .tabela th {
+      background: #eee6fa;
+      color: #35166a;
+      height: 48px;
+      text-align: left;
+      padding: 0 15px;
+      font-size: 14px;
+      font-weight: 800;
+      border-right: 1px solid #e1d9ec;
+    }
+
+    .tabela th:first-child {
+      border-radius: 12px 0 0 0;
+    }
+
+    .tabela th:last-child {
+      border-radius: 0 12px 0 0;
+      border-right: none;
+    }
+
+    .tabela td {
+      height: 70px;
+      padding: 8px 15px;
+      color: #3d2b59;
+      font-size: 14px;
+      border-bottom: 1px solid #ebe7ef;
+      border-right: 1px solid #ebe7ef;
+      white-space: nowrap;
+    }
+
+    .tabela td:last-child {
+      border-right: none;
+    }
+
+    .foto-tabela {
+      width: 105px;
+      height: 58px;
+      border-radius: 9px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .codigo {
+      color: #35166a;
+      font-weight: 700;
+    }
+
+    .valor-tabela {
+      color: #35166a;
+      font-weight: 800;
+    }
+
+    .status-tabela {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 37px;
+      padding: 0 15px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .disponivel {
+      background: #d8f2dd;
+      color: #23913a;
+    }
+
+    .alugado {
+      background: #dceeff;
+      color: #227bc2;
+    }
+
+    .vendido {
+      background: #e8dcff;
+      color: #6733bd;
+    }
+
+    .negociacao {
+      background: #fff0d7;
+      color: #c37b00;
+    }
+
+    .acoes {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .acao {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 10px;
+      background: #eee4fb;
+      color: #612ca4;
+      cursor: pointer;
+      font-size: 19px;
+    }
+
+    /* RESPONSIVIDADE */
+    @media (max-width: 1250px) {
+      .imoveis-destaque {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .barra-ferramentas {
+        flex-wrap: wrap;
+      }
+
+      .campo-busca {
+        width: 100%;
+        flex-basis: 100%;
+      }
+
+      .filtros {
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .botao-cadastrar {
+        margin-left: auto;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 175px minmax(0, 1fr);
+      }
+
+      .item-menu {
+        font-size: 14px;
+      }
+
+      .item-menu img {
+        width: 49px !important;
+        height: 49px !important;
+      }
+
+      .conteudo {
+        padding: 16px 10px 25px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topo {
+        height: 86px;
+        padding: 0 15px;
+      }
+
+      .logo img {
+        width: 135px;
+      }
+
+      .perfil {
+        font-size: 16px;
+        gap: 8px;
+      }
+
+      .perfil small {
+        font-size: 12px;
+      }
+
+      .avatar {
+        width: 50px;
+        height: 50px;
+      }
+
+      .layout {
+        display: block;
+      }
+
+      .menu {
+        flex-direction: row;
+        overflow-x: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--borda);
+        padding: 7px;
+        gap: 4px;
+      }
+
+      .item-menu {
+        margin: 0;
+        height: 40px;
+        padding: 5px 8px;
+        font-size: 13px;
+      }
+
+      .item-menu img {
+        width: 45px !important;
+        height: 45px !important;
+      }
+
+      .menu-espaco {
+        margin-top: 0;
+      }
+
+      .conteudo {
+        padding: 12px;
+      }
+
+      .cabecalho-imoveis {
+        height: 110px;
+        padding: 18px 25px;
+      }
+
+      .cabecalho-imoveis h1 {
+        font-size: 30px;
+      }
+
+      .cabecalho-imoveis p {
+        font-size: 13px;
+      }
+
+      .imoveis-destaque {
+        grid-template-columns: 1fr;
+      }
+
+      .foto-imovel {
+        height: 220px;
+      }
+
+      .barra-ferramentas {
+        display: block;
+      }
+
+      .campo-busca {
+        margin-bottom: 12px;
+      }
+
+      .filtros {
+        width: 100%;
+        margin-bottom: 12px;
+      }
+
+      .botao-cadastrar {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- BARRA SUPERIOR -->
+  <header class="topo">
+
+    <div class="logo">
+      <img src="logo_imobi.png" alt="IMOBI - Gestão Imobiliária">
+    </div>
+
+    <div class="perfil">
+      <span class="avatar"></span>
+
+      <div>
+        Clara<br>
+        <small>Administradora</small>
+      </div>
+    </div>
+
+  </header>
+
+
+  <div class="layout">
+
+    <!-- MENU LATERAL -->
+    <aside class="menu">
+
+      <a class="item-menu" href="#inicio">
+        <img src="casa_pagina_principal.png" alt="">
+        <span>Página inicial</span>
+      </a>
+
+      <a class="item-menu ativo" href="#imoveis">
+        <img src="casa_imoveis.png" alt="">
+        <span>Imóveis</span>
+      </a>
+
+      <a class="item-menu" href="#clientes">
+        <img src="pessoas_clientes.png" alt="">
+        <span>Clientes</span>
+      </a>
+
+      <a class="item-menu" href="#proprietarios">
+        <img src="pessoa_proprietarios.png" alt="">
+        <span>Proprietários</span>
+      </a>
+
+      <a class="item-menu" href="#corretores">
+        <img src="papel_corretores.png" alt="">
+        <span>Corretores</span>
+      </a>
+
+      <a class="item-menu" href="#relatorios">
+        <img src="grafico_relatorios.png" alt="">
+        <span>Relatórios</span>
+      </a>
+
+      <a class="item-menu" href="#configuracoes">
+        <img src="engrenagem_configuraçoes.png" alt="">
+        <span>Configurações</span>
+      </a>
+
+      <div class="menu-espaco"></div>
+
+      <a class="item-menu" href="#ajuda">
+        <img src="interrogaçao_ajuda.png" alt="">
+        <span>Ajuda</span>
+      </a>
+
+      <a class="item-menu" href="#sair">
+        <img src="porta_sair.png" alt="">
+        <span>Sair</span>
+      </a>
+
+    </aside>
+
+
+    <!-- CONTEÚDO -->
+    <main class="conteudo" id="imoveis">
+
+      <!-- CABEÇALHO -->
+      <section class="cabecalho-imoveis">
+
+        <h1>Imóveis</h1>
+
+        <p>
+          Gerencie todos os imóveis cadastrados na sua imobiliária.
+        </p>
+
+      </section>
+
+
+      <!-- BUSCA E FILTROS -->
+      <section class="barra-ferramentas">
+
+        <div class="campo-busca">
+
+          <span class="icone-busca"></span>
+
+          <input
+            type="text"
+            placeholder="Buscar por nome, endereço ou código..."
+          >
+
+        </div>
+
+
+        <div class="filtros">
+
+          <button class="filtro ativo">Todos</button>
+
+          <button class="filtro">Disponíveis</button>
+
+          <button class="filtro">Alugados</button>
+
+          <button class="filtro">Vendidos</button>
+
+          <button class="filtro">Em negociação</button>
+
+        </div>
+
+
+        <button class="botao-cadastrar">
+
+          <span class="mais">+</span>
+
+          Cadastrar imóvel
+
+        </button>
+
+      </section>
+
+
+      <!-- TÍTULO -->
+      <div class="titulo-secao">
+
+        <span class="icone-casa"></span>
+
+        <h2>Imóveis em destaque</h2>
+
+        <div class="linha-titulo"></div>
+
+        <a href="#" class="ver-todos">Ver todos →</a>
+
+      </div>
+
+
+      <!-- IMÓVEIS -->
+      <section class="imoveis-destaque">
+
+
+        <!-- IMÓVEL 1 -->
+        <article class="card-imovel">
+
+          <div class="foto-imovel">
+
+            <img
+              src="https://www.salles.imb.br/admin/fotos_destaque/13232908_1604013343248088_6302168264450648482_n.jpg"
+              alt="Casa moderna"
+            >
+
+            <div class="status">
+              <span class="status-ponto"></span>
+              Disponível
+            </div>
+
+          </div>
+
+          <div class="informacoes-imovel">
+
+            <h3>Casa Jardim Europa</h3>
+
+            <div class="endereco">
+              <span class="icone-localizacao"></span>
+              Rua das Flores, 123
+            </div>
+
+            <div class="rodape-card">
+
+              <div class="tipo-valor">
+
+                <span class="tipo-imovel">Casa</span>
+
+                <span class="separador"></span>
+
+                <span class="valor-imovel">
+                  R$ 650.000,00
+                </span>
+
+              </div>
+
+              <button class="botao-detalhes">→</button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- IMÓVEL 2 -->
+        <article class="card-imovel">
+
+          <div class="foto-imovel">
+
+            <img
+              src="https://controle.archshop.com.br/uploads/fachada_moderna_pedra_madeira_jardim_tropical_79f7bbfe5b.jpg?format=webp&quality=80"
+              alt="Casa moderna"
+            >
+
+            <div class="status status-alugado">
+              <span class="status-ponto"></span>
+              Alugado
+            </div>
+
+          </div>
+
+          <div class="informacoes-imovel">
+
+            <h3>Casa Parque Central</h3>
+
+            <div class="endereco">
+              <span class="icone-localizacao"></span>
+              Av. Brasil, 456
+            </div>
+
+            <div class="rodape-card">
+
+              <div class="tipo-valor">
+
+                <span class="tipo-imovel">Casa</span>
+
+                <span class="separador"></span>
+
+                <span class="valor-imovel">
+                  R$ 4.500,00/mês
+                </span>
+
+              </div>
+
+              <button class="botao-detalhes">→</button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- IMÓVEL 3 -->
+        <article class="card-imovel">
+
+          <div class="foto-imovel">
+
+            <img
+              src="https://s2-casaejardim.glbimg.com/T4auTs8vJ4MACHZ22yRHGw7ukUU=/0x0:1400x933/888x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_a0b7e59562ef42049f4e191fe476fe7d/internal_photos/bs/2025/k/r/8bAv6ER5uUw9aMtIBShA/2-sala-de-estar-integrada-a-area-sofa-circular-externa-rhenan-e-fhabricio-arquitetura.jpg"
+              alt="Área externa moderna"
+            >
+
+            <div class="status status-negociacao">
+              <span class="status-ponto"></span>
+              Em negociação
+            </div>
+
+          </div>
+
+          <div class="informacoes-imovel">
+
+            <h3>Casa Boa Vista</h3>
+
+            <div class="endereco">
+              <span class="icone-localizacao"></span>
+              Rua Horizonte, 789
+            </div>
+
+            <div class="rodape-card">
+
+              <div class="tipo-valor">
+
+                <span class="tipo-imovel">Casa</span>
+
+                <span class="separador"></span>
+
+                <span class="valor-imovel">
+                  R$ 780.000,00
+                </span>
+
+              </div>
+
+              <button class="botao-detalhes">→</button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- IMÓVEL 4 -->
+        <article class="card-imovel">
+
+          <div class="foto-imovel">
+
+            <img
+              src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+              alt="Interior moderno"
+            >
+
+            <div class="status status-vendido">
+              <span class="status-ponto"></span>
+              Vendido
+            </div>
+
+          </div>
+
+          <div class="informacoes-imovel">
+
+            <h3>Residencial Vila Nova</h3>
+
+            <div class="endereco">
+              <span class="icone-localizacao"></span>
+              Rua das Acácias, 321
+            </div>
+
+            <div class="rodape-card">
+
+              <div class="tipo-valor">
+
+                <span class="tipo-imovel">Apartamento</span>
+
+                <span class="separador"></span>
+
+                <span class="valor-imovel">
+                  R$ 620.000,00
+                </span>
+
+              </div>
+
+              <button class="botao-detalhes">→</button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      </section>
+
+
+      <!-- LISTA DE IMÓVEIS -->
+      <section class="lista-container">
+
+        <div class="titulo-lista">
+
+          <span class="icone-lista">☷</span>
+
+          <h2>Lista de imóveis</h2>
+
+        </div>
+
+
+        <div class="tabela-wrapper">
+
+          <table class="tabela">
+
+            <thead>
+
+              <tr>
+                <th>Foto</th>
+                <th>Código</th>
+                <th>Endereço</th>
+                <th>Tipo</th>
+                <th>Valor</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr>
+
+                <td>
+                  <img
+                    class="foto-tabela"
+                    src="https://www.salles.imb.br/admin/fotos_destaque/13232908_1604013343248088_6302168264450648482_n.jpg"
+                    alt=""
+                  >
+                </td>
+
+                <td class="codigo">IMB001</td>
+
+                <td>Rua das Acácias, 321</td>
+
+                <td>Casa</td>
+
+                <td class="valor-tabela">R$ 620.000,00</td>
+
+                <td>
+                  <span class="status-tabela disponivel">
+                    Disponível
+                  </span>
+                </td>
+
+                <td>
+
+                  <div class="acoes">
+
+                    <button class="acao">✎</button>
+
+                    <button class="acao">♜</button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>
+                  <img
+                    class="foto-tabela"
+                    src="https://controle.archshop.com.br/uploads/fachada_moderna_pedra_madeira_jardim_tropical_79f7bbfe5b.jpg?format=webp&quality=80"
+                    alt=""
+                  >
+                </td>
+
+                <td class="codigo">IMB002</td>
+
+                <td>Av. Brasil, 456</td>
+
+                <td>Casa</td>
+
+                <td class="valor-tabela">R$ 4.500,00/mês</td>
+
+                <td>
+                  <span class="status-tabela alugado">
+                    Alugado
+                  </span>
+                </td>
+
+                <td>
+
+                  <div class="acoes">
+
+                    <button class="acao">✎</button>
+
+                    <button class="acao">♜</button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>
+                  <img
+                    class="foto-tabela"
+                    src="https://s2-casaejardim.glbimg.com/T4auTs8vJ4MACHZ22yRHGw7ukUU=/0x0:1400x933/888x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_a0b7e59562ef42049f4e191fe476fe7d/internal_photos/bs/2025/k/r/8bAv6ER5uUw9aMtIBShA/2-sala-de-estar-integrada-a-area-sofa-circular-externa-rhenan-e-fhabricio-arquitetura.jpg"
+                    alt=""
+                  >
+                </td>
+
+                <td class="codigo">IMB003</td>
+
+                <td>Rua Horizonte, 789</td>
+
+                <td>Casa</td>
+
+                <td class="valor-tabela">R$ 780.000,00</td>
+
+                <td>
+                  <span class="status-tabela negociacao">
+                    Em negociação
+                  </span>
+                </td>
+
+                <td>
+
+                  <div class="acoes">
+
+                    <button class="acao">✎</button>
+
+                    <button class="acao">♜</button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>
+                  <img
+                    class="foto-tabela"
+                    src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+                    alt=""
+                  >
+                </td>
+
+                <td class="codigo">IMB004</td>
+
+                <td>Rua das Acácias, 321</td>
+
+                <td>Apartamento</td>
+
+                <td class="valor-tabela">R$ 620.000,00</td>
+
+                <td>
+                  <span class="status-tabela vendido">
+                    Vendido
+                  </span>
+                </td>
+
+                <td>
+
+                  <div class="acoes">
+
+                    <button class="acao">✎</button>
+
+                    <button class="acao">♜</button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+</body>
+</html>
